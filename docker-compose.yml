@@ -34,7 +34,7 @@ services:
   suricata:
     image: jasonish/suricata:latest
     container_name: suricata
-    command: ["-i", "YOUR_INTERFACE_HERE"]
+    command: ["-i", "wlp2s0"] # Insert your network interface
     volumes:
       - ./suricata/logs:/var/log/suricata
     network_mode: host

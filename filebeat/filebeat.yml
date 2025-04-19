@@ -1,25 +1,30 @@
 filebeat.inputs:
   - type: log
+    enabled: true
     paths:
       - /var/log/suricata/eve.json
     json.keys_under_root: true
     json.add_error_key: true
+    fields:
+      log_type: suricata
+    fields_under_root: true
 
-output.elasticsearch:
-  hosts: ["http://elasticsearch:9200"]
-  index: "suricata-logs"
-
-setup.kibana:
-  host: "http://kibana:5601"
-
-setup.template.name: "suricata"
-setup.template.pattern: "suricata-*"
-
-# ILM settings for suricata logs
-setup.ilm.enabled: true
-setup.ilm.rollover_alias: "suricata"
-setup.ilm.policy_name: "suricata-logs-retention"
+processors:
+  - drop_event:
+      when:
+        not:
+          or:
+            - has_fields: ['alert']
+            - has_fields: ['http']
+            - has_fields: ['dns']
 
 output.elasticsearch:
   hosts: ["http://elasticsearch:9200"]
   index: "suricata-%{+yyyy.MM.dd}"
+
+setup.ilm.enabled: true
+setup.ilm.rollover_alias: "suricata"
+setup.ilm.policy_name: "suricata-logs-retention"
+
+setup.template.name: "suricata"
+setup.template.pattern: "suricata-*"
