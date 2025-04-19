@@ -1,0 +1,31 @@
+# Node / general system
+.DS_Store
+Thumbs.db
+
+# Suricata logs and temp
+suricata/logs/
+!suricata/logs/.gitkeep  # Keep folder structure
+suricata/etc/*.config
+
+# Filebeat working state
+filebeat/data/
+filebeat/logs/
+!filebeat/filebeat.yml
+
+# Docker volumes and intermediate files
+volumes/
+*.pid
+*.log
+
+# IDE/editor specific
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Python virtualenv (if used for scripts)
+venv/
+__pycache__/
+
+# Elasticsearch/Kibana volumes
+esdata/
